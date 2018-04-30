@@ -1,5 +1,6 @@
 // alright, let's start by declaring the variables for the game //
 var gameOver = false;
+var points = 0;
 var wins = 0;
 var losses = 0;
 var guessesLeft = 12;
@@ -62,13 +63,15 @@ document.onkeyup = function(event) {
     spanGuessesRemaining.textContent = guessesLeft;
 
     // begin logic for game //
-
-    if (randomWord.lastIndexOf(userGuess) > -1) {
+    // write an if statement to check if user guess matches a letter in the word, and replaces the blank spot //
+    if (randomWord.indexOf(userGuess) > -1) {
         alert(userGuess + " is present")
         letterSwap = randomWord.indexOf(userGuess);
         alert(letterSwap);
         currentWord[letterSwap] = userGuess
         spanCurrentWord.textContent = currentWord;
+        points ++;
+        // if points reach randomWord.length then game is over and win ++ //
     }
 
 
