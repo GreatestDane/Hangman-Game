@@ -1,3 +1,17 @@
-p {
-    background: red;
+html {
+    background-color: black;
 }
+
+#hangman-pic {
+    position: relative;
+    right: 15px;
+    height: 200px;
+    width: 1140px;
+}
+
+.hangman-col {
+    font-family: 'Cabin Sketch', cursive;
+    color: white;
+    border: 10px solid red;
+}
+
