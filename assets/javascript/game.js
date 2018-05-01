@@ -19,10 +19,21 @@ var spanAlreadyGuessed = document.getElementById("already-guessed");
 // Declare functions for game //
 
 function displayWord(array) {
-    for (var i = 0; i < array.length; i ++) {
+    for (var i = 0; i < array.length; i++) {
         currentWord.push("-");
         spanCurrentWord.textContent = currentWord;
     }
+}
+
+function gameReset() {
+    guessesLeft = 12;
+    spanGuessesRemaining.textContent = guessesLeft;
+    spanAlreadyGuessed.textContent = " ";
+    currentWord = [];
+    randomWord = words[Math.floor(Math.random() * words.length)];
+    displayWord(randomWord);
+    alert(randomWord);
+
 }
 
 // Create the array of array's for the words you're going to have //
@@ -33,7 +44,7 @@ var words = [
     ['l', 'u', 'c', 'i', 'f', 'e', 'r'],
     ['m', 'a', 'g', 'i', 'c', 'k'],
     ['o', 'c', 'c', 'u', 'l', 't'],
-    ['s', 'u', 'c', 'c', 'u', 'b', 'u', 's']
+    ['s', 'u', 'c', 'c', 'u', 'b', 'u', 's'],
     ['s', 'u', 'm', 'm', 'o', 'n'],
     ['r', 'i', 't', 'u', 'a', 'l'],
     ['c', 'r', 'o', 'w', 'l', 'e', 'y'],
@@ -43,7 +54,7 @@ var words = [
 
 // Create the array for the letters that are going to be guessed //
 var lettersGuessed = [];
-            
+
 // Generate a random word //
 randomWord = words[Math.floor(Math.random() * words.length)];
 console.log(randomWord);
@@ -54,25 +65,42 @@ spanGuessesRemaining.textContent = guessesLeft;
 
 // Begin game by pressing any key on the keyboard //
 
-document.onkeyup = function(event) {
+document.onkeyup = function (event) {
     userGuess = event.key;
     // push userGuess into the array LettersGuessed and display it to screen //
     lettersGuessed.push(userGuess);
     spanAlreadyGuessed.textContent = lettersGuessed;
-    guessesLeft --;
     spanGuessesRemaining.textContent = guessesLeft;
 
     // begin logic for game //
     // write an if statement to check if user guess matches a letter in the word, and replaces the blank spot //
-    if (randomWord.indexOf(userGuess) > -1) {
-        alert(userGuess + " is present")
-        letterSwap = randomWord.indexOf(userGuess);
-        alert(letterSwap);
-        currentWord[letterSwap] = userGuess
-        spanCurrentWord.textContent = currentWord;
-        points ++;
-        // if points reach randomWord.length then game is over and win ++ //
+    if (randomWord.indexOf(userGuess) === -1) {
+        guessesLeft--;
+        spanGuessesRemaining.textContent = guessesLeft;
     }
 
+    while (randomWord.indexOf(userGuess) > -1) {
+        letterSwap = randomWord.indexOf(userGuess);
+        currentWord[letterSwap] = userGuess
+        randomWord[letterSwap] = "-";
+        spanCurrentWord.textContent = currentWord;
+        points++;
+    }
 
+    if (points === randomWord.length) {
+        wins++;
+        spanWins.textContent = wins;
+        gameOver = true;
+    }
+
+    if (guessesLeft === 0) {
+        losses++;
+        spanLosses.textContent = losses;
+        gameOver = true;
+    }
+
+    if (gameOver === true) {
+        gameOver = false;
+        gameReset();
+    }
 }
