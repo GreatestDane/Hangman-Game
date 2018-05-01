@@ -8,6 +8,7 @@ var userGuess;
 var randomWord;
 var currentWord = [];
 var letterSwap;
+var shadowWord;
 
 // Declare the span variables //
 var spanWins = document.getElementById("wins");
@@ -15,26 +16,6 @@ var spanLosses = document.getElementById("losses");
 var spanCurrentWord = document.getElementById("current-word");
 var spanGuessesRemaining = document.getElementById("guesses-remaining");
 var spanAlreadyGuessed = document.getElementById("already-guessed");
-
-// Declare functions for game //
-
-function displayWord(array) {
-    for (var i = 0; i < array.length; i++) {
-        currentWord.push("-");
-        spanCurrentWord.textContent = currentWord;
-    }
-}
-
-function gameReset() {
-    guessesLeft = 12;
-    spanGuessesRemaining.textContent = guessesLeft;
-    spanAlreadyGuessed.textContent = " ";
-    currentWord = [];
-    randomWord = words[Math.floor(Math.random() * words.length)];
-    displayWord(randomWord);
-    alert(randomWord);
-
-}
 
 // Create the array of array's for the words you're going to have //
 var words = [
@@ -54,6 +35,43 @@ var words = [
 
 // Create the array for the letters that are going to be guessed //
 var lettersGuessed = [];
+
+// Declare functions for game //
+
+function displayWord(array) {
+    for (var i = 0; i < array.length; i++) {
+        currentWord.push("-");
+        spanCurrentWord.textContent = currentWord;
+    }
+}
+
+function gameReset() {
+    gameOver = false;
+    words = [
+        ['n', 'e', 'c', 'r', 'o', 's', 'i', 's'],
+        ['r', 'a', 'g', 'e'],
+        ['d', 'e', 'a', 't', 'h'],
+        ['l', 'u', 'c', 'i', 'f', 'e', 'r'],
+        ['m', 'a', 'g', 'i', 'c', 'k'],
+        ['o', 'c', 'c', 'u', 'l', 't'],
+        ['s', 'u', 'c', 'c', 'u', 'b', 'u', 's'],
+        ['s', 'u', 'm', 'm', 'o', 'n'],
+        ['r', 'i', 't', 'u', 'a', 'l'],
+        ['c', 'r', 'o', 'w', 'l', 'e', 'y'],
+        ['s', 'a', 'c', 'r', 'i', 'f', 'i', 'c', 'e'],
+        ['a', 'l', 't', 'a', 'r']
+    ]
+    guessesLeft = 12;
+    points = 0;
+    spanGuessesRemaining.textContent = guessesLeft;
+    lettersGuessed = [];
+    spanAlreadyGuessed.textContent = lettersGuessed;
+    currentWord = [];
+    randomWord = words[Math.floor(Math.random() * words.length)];
+    displayWord(randomWord);
+    alert(randomWord);
+}
+
 
 // Generate a random word //
 randomWord = words[Math.floor(Math.random() * words.length)];
@@ -82,7 +100,7 @@ document.onkeyup = function (event) {
     while (randomWord.indexOf(userGuess) > -1) {
         letterSwap = randomWord.indexOf(userGuess);
         currentWord[letterSwap] = userGuess
-        randomWord[letterSwap] = "-";
+        randomWord[letterSwap] = "*";
         spanCurrentWord.textContent = currentWord;
         points++;
     }
@@ -93,14 +111,13 @@ document.onkeyup = function (event) {
         gameOver = true;
     }
 
-    if (guessesLeft === 0) {
+    if (guessesLeft < 0) {
         losses++;
         spanLosses.textContent = losses;
         gameOver = true;
     }
 
     if (gameOver === true) {
-        gameOver = false;
         gameReset();
     }
 }
