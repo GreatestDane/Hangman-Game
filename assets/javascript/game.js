@@ -8,7 +8,7 @@ var userGuess;
 var randomWord;
 var currentWord = [];
 var letterSwap;
-var shadowWord;
+var playOver = false;
 
 // Declare the span variables //
 var spanWins = document.getElementById("wins");
@@ -47,6 +47,7 @@ function displayWord(array) {
 
 function gameReset() {
     gameOver = false;
+    playOver = false;
     words = [
         ['n', 'e', 'c', 'r', 'o', 's', 'i', 's'],
         ['r', 'a', 'g', 'e'],
@@ -85,36 +86,45 @@ spanGuessesRemaining.textContent = guessesLeft;
 
 document.onkeyup = function (event) {
     userGuess = event.key;
+    if (playOver === true) {
+        gameOver = true;
+    }
     // push userGuess into the array LettersGuessed and display it to screen //
-    lettersGuessed.push(userGuess);
-    spanAlreadyGuessed.textContent = lettersGuessed;
+    // lettersGuessed.push(userGuess);
+    // spanAlreadyGuessed.textContent = lettersGuessed;
     spanGuessesRemaining.textContent = guessesLeft;
 
     // begin logic for game //
     // write an if statement to check if user guess matches a letter in the word, and replaces the blank spot //
-    if (randomWord.indexOf(userGuess) === -1) {
-        guessesLeft--;
-        spanGuessesRemaining.textContent = guessesLeft;
+    if (lettersGuessed.indexOf(userGuess) === -1) {
+        lettersGuessed.push(userGuess);
+        spanAlreadyGuessed.textContent = lettersGuessed;
+
+        if (randomWord.indexOf(userGuess) === -1) {
+            guessesLeft--;
+            spanGuessesRemaining.textContent = guessesLeft;
+        }
+
+        while (randomWord.indexOf(userGuess) > -1) {
+            letterSwap = randomWord.indexOf(userGuess);
+            currentWord[letterSwap] = userGuess
+            randomWord[letterSwap] = "*";
+            spanCurrentWord.textContent = currentWord;
+            points++;
+        }
     }
 
-    while (randomWord.indexOf(userGuess) > -1) {
-        letterSwap = randomWord.indexOf(userGuess);
-        currentWord[letterSwap] = userGuess
-        randomWord[letterSwap] = "*";
-        spanCurrentWord.textContent = currentWord;
-        points++;
-    }
 
     if (points === randomWord.length) {
         wins++;
         spanWins.textContent = wins;
-        gameOver = true;
+        playOver = true;
     }
 
-    if (guessesLeft < 0) {
+    if (guessesLeft < 1) {
         losses++;
         spanLosses.textContent = losses;
-        gameOver = true;
+        playOver = true;
     }
 
     if (gameOver === true) {
