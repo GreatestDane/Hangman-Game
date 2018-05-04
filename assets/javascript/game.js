@@ -16,6 +16,8 @@ var spanLosses = document.getElementById("losses");
 var spanCurrentWord = document.getElementById("current-word");
 var spanGuessesRemaining = document.getElementById("guesses-remaining");
 var spanAlreadyGuessed = document.getElementById("already-guessed");
+var spanEndGame = document.getElementById("end-game");
+var spanWinsLoss = document.getElementById("wins-loss");
 
 // Create the array of array's for the words you're going to have //
 var words = [
@@ -30,8 +32,32 @@ var words = [
     ['r', 'i', 't', 'u', 'a', 'l'],
     ['c', 'r', 'o', 'w', 'l', 'e', 'y'],
     ['s', 'a', 'c', 'r', 'i', 'f', 'i', 'c', 'e'],
-    ['a', 'l', 't', 'a', 'r']
-]
+    ['a', 'l', 't', 'a', 'r'],
+    ['s', 'p', 'e', 'l', 'l', 's'],
+    ['a', 'm', 'u', 'l', 'e', 't'],
+    ['i', 'n', 'c', 'u', 'b', 'u', 's']
+];
+
+// Create the array of images you can use //
+
+var images = [
+    ["./assets/images/necrosis.jpg"],
+    ["./assets/images/rage.jpg"],
+    ["./assets/images/death.jpg"],
+    ["./assets/images/lucifer.jpg"],
+    ["./assets/images/magick.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/succubus.jpg"],
+    ["./assets/images/summon.png"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/occult.jpg"],
+    ["./assets/images/clown-lose.jpg"]
+];
 
 // Create the array for the letters that are going to be guessed //
 var lettersGuessed = [];
@@ -48,34 +74,21 @@ function displayWord(array) {
 function gameReset() {
     gameOver = false;
     playOver = false;
-    words = [
-        ['n', 'e', 'c', 'r', 'o', 's', 'i', 's'],
-        ['r', 'a', 'g', 'e'],
-        ['d', 'e', 'a', 't', 'h'],
-        ['l', 'u', 'c', 'i', 'f', 'e', 'r'],
-        ['m', 'a', 'g', 'i', 'c', 'k'],
-        ['o', 'c', 'c', 'u', 'l', 't'],
-        ['s', 'u', 'c', 'c', 'u', 'b', 'u', 's'],
-        ['s', 'u', 'm', 'm', 'o', 'n'],
-        ['r', 'i', 't', 'u', 'a', 'l'],
-        ['c', 'r', 'o', 'w', 'l', 'e', 'y'],
-        ['s', 'a', 'c', 'r', 'i', 'f', 'i', 'c', 'e'],
-        ['a', 'l', 't', 'a', 'r']
-    ]
     guessesLeft = 12;
     points = 0;
     spanGuessesRemaining.textContent = guessesLeft;
     lettersGuessed = [];
     spanAlreadyGuessed.textContent = lettersGuessed;
     currentWord = [];
-    randomWord = words[Math.floor(Math.random() * words.length)];
+    randomWord = words[Math.floor(Math.random() * words.length)].slice();
     displayWord(randomWord);
+    console.log(randomWord);
     alert(randomWord);
 }
 
 
 // Generate a random word //
-randomWord = words[Math.floor(Math.random() * words.length)];
+randomWord = words[Math.floor(Math.random() * words.length)].slice();
 console.log(randomWord);
 
 // present random word and number of guesses to the screen //
@@ -115,15 +128,19 @@ document.onkeyup = function (event) {
     }
 
 
-    if (points === randomWord.length) {
+    if (points === randomWord.length && gameOver === false) {
         wins++;
         spanWins.textContent = wins;
+        spanEndGame.src = images[0];
+        spanWinsLoss.textContent = "You win!"
         playOver = true;
     }
 
-    if (guessesLeft < 1) {
+    if (guessesLeft < 1 && gameOver === false) {
         losses++;
         spanLosses.textContent = losses;
+        spanEndGame.src = images[15];
+        spanWinsLoss.textContent = "You lose!";
         playOver = true;
     }
 
