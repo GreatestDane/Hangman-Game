@@ -9,6 +9,8 @@ var randomWord;
 var currentWord = [];
 var letterSwap;
 var playOver = false;
+var randomImage;
+var randomIdx;
 
 // Declare the span variables //
 var spanWins = document.getElementById("wins");
@@ -49,13 +51,13 @@ var images = [
     ["./assets/images/occult.jpg"],
     ["./assets/images/succubus.jpg"],
     ["./assets/images/summon.png"],
-    ["./assets/images/occult.jpg"],
-    ["./assets/images/occult.jpg"],
-    ["./assets/images/occult.jpg"],
-    ["./assets/images/occult.jpg"],
-    ["./assets/images/occult.jpg"],
-    ["./assets/images/occult.jpg"],
-    ["./assets/images/occult.jpg"],
+    ["./assets/images/ritual.jpg"],
+    ["./assets/images/crowley.jpg"],
+    ["./assets/images/sacrifice.jpg"],
+    ["./assets/images/altar.JPG"],
+    ["./assets/images/spells.jpg"],
+    ["./assets/images/amulet.jpg"],
+    ["./assets/images/incubus.jpg"],
     ["./assets/images/clown-lose.jpg"]
 ];
 
@@ -80,16 +82,18 @@ function gameReset() {
     lettersGuessed = [];
     spanAlreadyGuessed.textContent = lettersGuessed;
     currentWord = [];
-    randomWord = words[Math.floor(Math.random() * words.length)].slice();
+    randomIdx = Math.floor(Math.random() * words.length);
+    randomWord = words[randomIdx].slice();
     displayWord(randomWord);
     console.log(randomWord);
-    alert(randomWord);
-}
+};
 
 
 // Generate a random word //
-randomWord = words[Math.floor(Math.random() * words.length)].slice();
+randomIdx = Math.floor(Math.random() * words.length);
+randomWord = words[randomIdx].slice();
 console.log(randomWord);
+console.log(randomImage);
 
 // present random word and number of guesses to the screen //
 displayWord(randomWord);
@@ -101,7 +105,7 @@ document.onkeyup = function (event) {
     userGuess = event.key;
     if (playOver === true) {
         gameOver = true;
-    }
+    };
     // push userGuess into the array LettersGuessed and display it to screen //
     // lettersGuessed.push(userGuess);
     // spanAlreadyGuessed.textContent = lettersGuessed;
@@ -116,25 +120,25 @@ document.onkeyup = function (event) {
         if (randomWord.indexOf(userGuess) === -1) {
             guessesLeft--;
             spanGuessesRemaining.textContent = guessesLeft;
-        }
+        };
 
         while (randomWord.indexOf(userGuess) > -1) {
             letterSwap = randomWord.indexOf(userGuess);
-            currentWord[letterSwap] = userGuess
+            currentWord[letterSwap] = userGuess;
             randomWord[letterSwap] = "*";
             spanCurrentWord.textContent = currentWord;
             points++;
-        }
-    }
+        };
+    };
 
 
     if (points === randomWord.length && gameOver === false) {
         wins++;
         spanWins.textContent = wins;
-        spanEndGame.src = images[0];
+        spanEndGame.src = images[randomIdx];
         spanWinsLoss.textContent = "You win!"
         playOver = true;
-    }
+    };
 
     if (guessesLeft < 1 && gameOver === false) {
         losses++;
@@ -142,9 +146,9 @@ document.onkeyup = function (event) {
         spanEndGame.src = images[15];
         spanWinsLoss.textContent = "You lose!";
         playOver = true;
-    }
+    };
 
     if (gameOver === true) {
         gameReset();
-    }
-}
+    };
+};
